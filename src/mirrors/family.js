@@ -32,11 +32,8 @@ const ATLASES_DIR = join(FAMILY_DIR, "atlases");
  */
 async function downloadMemberImage(slug, type) {
   console.log(`Downloading family member ${slug} image ${type}`);
-  await mkdir(join(FAMILY_DIR, slug, type), {
-    recursive: true,
-  });
   await writeFile(
-    join(FAMILY_DIR, slug, type, "index.png"),
+    join(FAMILY_DIR, slug, `${type}.png`),
     await fixedFetch(`/family/${slug}/${type}`)
       .then((i) => i.arrayBuffer())
       .then(Buffer.from),
@@ -89,11 +86,8 @@ export default async function mirror() {
 
     for (let i = 1; i <= atlas.atlasCount; i++) {
       console.log(`Downloading atlas ${slug} #${i}`);
-      await mkdir(join(ATLASES_DIR, slug, i.toString()), {
-        recursive: true,
-      });
       await writeFile(
-        join(ATLASES_DIR, slug, i.toString(), "index.png"),
+        join(ATLASES_DIR, slug, `${i}.png`),
         await fixedFetch(`/family/atlases/${slug}/${i}`)
           .then((i) => i.arrayBuffer())
           .then(Buffer.from),
