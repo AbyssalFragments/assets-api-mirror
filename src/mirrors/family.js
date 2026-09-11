@@ -47,30 +47,30 @@ export default async function mirror() {
   console.log("Mirroring Family...");
 
   await mkdir(FAMILY_DIR, { recursive: true });
-  // /**
-  //  * @type {FamilyMember[]}
-  //  */
-  // const family = await fixedFetch("/family").then((i) => i.json());
-  // await writeFile(join(FAMILY_DIR, "index.json"), JSON.stringify(family));
+  /**
+   * @type {FamilyMember[]}
+   */
+  const family = await fixedFetch("/family").then((i) => i.json());
+  await writeFile(join(FAMILY_DIR, "index.json"), JSON.stringify(family));
 
-  // for (const familyMember of family) {
-  //   console.log(`Processing family member ${familyMember.slug}`);
-  //   await mkdir(join(FAMILY_DIR, familyMember.slug), { recursive: true });
-  //   await writeFile(
-  //     join(FAMILY_DIR, familyMember.slug, "index.json"),
-  //     JSON.stringify(familyMember),
-  //   );
+  for (const familyMember of family) {
+    console.log(`Processing family member ${familyMember.slug}`);
+    await mkdir(join(FAMILY_DIR, familyMember.slug), { recursive: true });
+    await writeFile(
+      join(FAMILY_DIR, familyMember.slug, "index.json"),
+      JSON.stringify(familyMember),
+    );
 
-  //   await Promise.all(
-  //     [
-  //       familyMember.hasCard ? "card" : null,
-  //       familyMember.hasPoster ? "poster" : null,
-  //       familyMember.hasCutout ? "cutout" : null,
-  //     ]
-  //       .filter((i) => i !== null)
-  //       .map((type) => downloadMemberImage(familyMember.slug, type)),
-  //   );
-  // }
+    await Promise.all(
+      [
+        familyMember.hasCard ? "card" : null,
+        familyMember.hasPoster ? "poster" : null,
+        familyMember.hasCutout ? "cutout" : null,
+      ]
+        .filter((i) => i !== null)
+        .map((type) => downloadMemberImage(familyMember.slug, type)),
+    );
+  }
 
   await mkdir(ATLASES_DIR, { recursive: true });
   /**
